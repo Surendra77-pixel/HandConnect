@@ -1,22 +1,19 @@
 <div align="center">
 
-```
-███╗   ██╗███████╗ ██████╗ ███╗   ██╗     █████╗ ██╗   ██╗██████╗  █████╗     █████╗ ██████╗ 
-████╗  ██║██╔════╝██╔═══██╗████╗  ██║    ██╔══██╗██║   ██║██╔══██╗██╔══██╗   ██╔══██╗██╔══██╗
-██╔██╗ ██║█████╗  ██║   ██║██╔██╗ ██║    ███████║██║   ██║██████╔╝███████║   ███████║██████╔╝
-██║╚██╗██║██╔══╝  ██║   ██║██║╚██╗██║    ██╔══██║██║   ██║██╔══██╗██╔══██║   ██╔══██║██╔══██╗
-██║ ╚████║███████╗╚██████╔╝██║ ╚████║    ██║  ██║╚██████╔╝██║  ██║██║  ██║   ██║  ██║██║  ██║
-╚═╝  ╚═══╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝    ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝
-```
+# 🌌 AURAWEAVE
+### ULTIMATE EDITION v3.5
 
-### 🖐️ Real-Time Hand Tracking Augmented Reality — Entirely In Your Browser
+[![Live Preview](https://img.shields.io/badge/🚀_LIVE_PREVIEW-DEPLOYS_INSTANTLY-00ffff?style=for-the-badge&logo=github)](https://manthan91.github.io/HandConnect)
+[![Status](https://img.shields.io/badge/STATUS-PRODUCTION_READY-00ff00?style=for-the-badge)](https://github.com/manthan91/HandConnect)
+[![Build](https://img.shields.io/badge/BUILD-3.5.0--ULTIMATE-ff00ff?style=for-the-badge)](https://github.com/manthan91/HandConnect)
 
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Click_Here-00ffff?style=for-the-badge)](https://github.com/manthan91/HandConnect)
-[![GitHub Stars](https://img.shields.io/github/stars/manthan91/HandConnect?style=for-the-badge&color=ff00ff)](https://github.com/manthan91/HandConnect/stargazers)
-[![License](https://img.shields.io/badge/License-MIT-ff4500?style=for-the-badge)](LICENSE)
-[![No Framework](https://img.shields.io/badge/Framework-ZERO-00ff00?style=for-the-badge)](https://github.com/manthan91/HandConnect)
-[![No Backend](https://img.shields.io/badge/Backend-NONE-ff00ff?style=for-the-badge)](https://github.com/manthan91/HandConnect)
-[![Web APIs](https://img.shields.io/badge/Web_APIs-8_Used-ffcc00?style=for-the-badge)](https://github.com/manthan91/HandConnect)
+**Touchless AR interactivity — Entirely in your browser.**
+
+---
+
+[**🚀 OPEN LIVE PREVIEW**](https://manthan91.github.io/HandConnect)  │  [**📖 DOCUMENTATION**](#🎯-what-is-this)  │  [**🛠️ INSTALLATION**](#🚀-getting-started)
+
+---
 
 </div>
 
