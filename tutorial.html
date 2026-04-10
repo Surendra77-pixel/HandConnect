@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AURAWEAVE | The Wayfinder Tutorial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { background: #000; color: #fff; overflow: hidden; }
+    #tutorial-ui {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-end; padding-bottom: 80px;
+    }
+    .instruction-card {
+      background: rgba(0,0,0,0.8);
+      border: 1px solid rgba(0,255,255,0.3);
+      padding: 24px; border-radius: 12px;
+      text-align: center; backdrop-filter: blur(10px);
+      max-width: 400px; animation: slideUp 0.5s ease-out;
+    }
+    .instruction-card h2 { font-family: 'Orbitron'; color: #00ffff; margin-bottom: 8px; }
+    .instruction-card p { font-family: 'Space Mono'; opacity: 0.8; }
+    .back-btn {
+      position: absolute; top: 20px; left: 20px;
+      background: none; border: 1px solid #00ffff; color: #00ffff;
+      padding: 8px 16px; border-radius: 4px; pointer-events: all;
+    }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  </style>
+</head>
+<body>
+
+  <video id="video" playsinline autoplay muted style="display:none"></video>
+  <canvas id="canvas"></canvas>
+
+  <div id="tutorial-ui">
+    <div id="card" class="instruction-card">
+      <h2 id="step-title">Welcome, Weaver</h2>
+      <p id="step-desc">Loading tracking system...</p>
+    </div>
+  </div>
+
+  <button class="back-btn" onclick="location.href='index.html'">↩ Back</button>
+
+  <!-- MediaPipe -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+  
+  <!-- Core Modules -->
+  <script src="themes.js"></script>
+  <script src="gestures.js"></script>
+  <script src="audio.js"></script>
+  <script src="particles.js"></script>
+
+  <!-- Effects -->
+  <script src="effects/ripple.js"></script>
+  <script src="renderer.js"></script>
+  <script src="effects/interHand.js"></script>
+  <script src="tracker.js"></script>
+
+  <script>
+    (function() {
+      const canvas = document.getElementById('canvas');
+      const ctx    = canvas.getContext('2d');
+      const title  = document.getElementById('step-title');
+      const desc   = document.getElementById('step-desc');
+      const video  = document.getElementById('video');
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      let currentStep = 0;
+      const steps = [
+        { title: 'The Open Hand', desc: 'Show your hand clearly to the camera.', gesture: 'Open' },
+        { title: 'The Fist', desc: 'Curl your fingers into a fist to spawn particles.', gesture: 'Fist' },
+        { title: 'Pinch & Pull', desc: 'Pinch your thumb and index together.', gesture: 'Pinch' },
+        { title: 'The Weave', desc: 'Show TWO hands to connect them with lasers!', count: 2 },
+        { title: 'Aura Mastered', desc: 'You are ready. Heading to main UI...', final: true }
+      ];
+
+      function updateStep() {
+        const s = steps[currentStep];
+        if (!s) return;
+        title.textContent = s.title;
+        desc.textContent  = s.desc;
+        if (s.final) {
+          setTimeout(() => location.href = 'index.html', 3000);
+        }
+      }
+
+      function onResults(results) {
+        // Build stats for renderer
+        const stats = { 
+          handsDetected: results.multiHandLandmarks?.length || 0, 
+          fps: 60, 
+          gesture: 'None', 
+          spread: 0,
+          velocity: 0,
+          mode: 'TUTORIAL'
+        };
+        
+        const handsData = [];
+        if (results.multiHandLandmarks) {
+          results.multiHandLandmarks.forEach((lm, i) => {
+            const g = window.NeonAuraGestures.detectGesture(lm);
+            const s = window.NeonAuraGestures.calculateSpread(lm);
+            handsData.push({ landmarks: lm, gesture: g, spread: s });
+            if (i === 0) {
+              stats.gesture = g;
+              stats.spread = s;
+            }
+          });
+        }
+
+        // Logic progression
+        const activeStep = steps[currentStep];
+        if (activeStep) {
+          if (activeStep.count === 2 && handsData.length === 2) {
+            currentStep++; updateStep();
+          } else if (activeStep.gesture && handsData.some(h => h.gesture === activeStep.gesture)) {
+            currentStep++; updateStep();
+          } else if (currentStep === 0 && handsData.length > 0) {
+            currentStep++; updateStep();
+          }
+        }
+
+        // Corrected renderFrame call (v3.0 signature)
+        window.NeonAuraRenderer.renderFrame(
+          ctx, video, handsData, 'cyberpunk', performance.now(), stats, canvas.width, canvas.height, false
+        );
+      }
+
+      async function start() {
+        try {
+          // Initialize tracking
+          await window.NeonAuraTracker.init(video, onResults);
+          updateStep();
+        } catch (e) {
+          desc.textContent = "Camera error. Please reload.";
+        }
+      }
+      
+      document.body.addEventListener('click', start, { once: true });
+      desc.textContent = "Click anywhere to begin your training.";
+
+    })();
+  </script>
+</body>
+</html>

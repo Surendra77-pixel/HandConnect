@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AURAWEAVE — Real-time browser hand tracking AR experience with neon visual effects and reactive audio. No app install needed." />
+  <title>AURAWEAVE | Advanced Hand Tracking Experience</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- MediaPipe CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════
+       LOADING OVERLAY
+       ══════════════════════════════════════════════════════ -->
+  <div id="loading" role="status" aria-label="Loading AURAWEAVE" style="display:none">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Initializing Hand Tracking…</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       CAPTURE FLASH
+       ══════════════════════════════════════════════════════ -->
+  <div id="capture-flash" aria-hidden="true"></div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SPLASH SCREEN (PRD §4.1)
+       ══════════════════════════════════════════════════════ -->
+  <section id="splash" aria-label="AURAWEAVE Splash Screen">
+    <canvas id="splashCanvas" aria-hidden="true"></canvas>
+
+    <div class="splash-content">
+      <span class="splash-corner corner-tl" aria-hidden="true"></span>
+      <span class="splash-corner corner-tr" aria-hidden="true"></span>
+      <span class="splash-corner corner-bl" aria-hidden="true"></span>
+      <span class="splash-corner corner-br" aria-hidden="true"></span>
+
+      <div class="splash-logo">
+        <span class="logo-icon" aria-hidden="true">🖐️</span>
+        <div>
+          <h1 class="splash-title">AURAWEAVE</h1>
+          <p class="splash-subtitle">Advanced Hand Tracking AR</p>
+        </div>
+      </div>
+
+      <div class="splash-divider" aria-hidden="true"></div>
+
+      <p class="splash-desc">
+        Grant camera permissions and click below to start the audio/visual experience.
+        Move your hands in front of the camera to generate real-time neon effects.
+      </p>
+
+      <div class="splash-features" aria-label="Features">
+        <span class="feature-tag">2-Hand Tracking</span>
+        <span class="feature-tag">5 Themes</span>
+        <span class="feature-tag">7 Gestures</span>
+        <span class="feature-tag">Reactive Audio</span>
+        <span class="feature-tag">60 FPS Particles</span>
+        <span class="feature-tag">Draw Mode</span>
+        <span class="feature-tag">Piano Mode</span>
+      </div>
+
+      <div class="splash-actions">
+        <button id="enterBtn" type="button" aria-label="Enter the AURAWEAVE experience">
+          ⚡ Enter Experience
+        </button>
+        <button id="tutorialBtn" type="button" onclick="location.href='tutorial.html'" aria-label="Open the interactive tutorial">
+          📖 Tutorial
+        </button>
+      </div>
+
+      <div id="errorMsg" role="alert" aria-live="assertive">
+        <p>⚠️ Camera access was denied or unavailable.<br />Please allow camera permissions and try again.</p>
+        <button id="retryBtn" type="button">Retry</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       AR EXPERIENCE SCREEN (PRD §4.2)
+       ══════════════════════════════════════════════════════ -->
+  <div id="arScreen" aria-label="AR Hand Tracking Experience">
+
+    <!-- Hidden video — MediaPipe uses this as its source; we draw it on canvas -->
+    <video id="video" playsinline autoplay muted aria-hidden="true"></video>
+
+    <!-- Full-screen effects canvas -->
+    <canvas id="canvas" aria-label="AR Canvas — Hand tracking visualization"></canvas>
+
+    <!-- ── TOP BAR ─────────────────────────────────────────── -->
+    <nav id="topBar" aria-label="AR Controls">
+      <span class="top-logo" aria-label="AURAWEAVE">AURAWEAVE</span>
+
+      <div class="top-right">
+        <!-- Theme Switcher (PRD §4.2.C) -->
+        <div id="themeSwitcher" role="group" aria-label="Visual Theme">
+          <button class="theme-pill"        data-theme="rainbow"   id="theme-rainbow"   type="button" aria-pressed="false">Rainbow</button>
+          <button class="theme-pill active" data-theme="cyberpunk" id="theme-cyberpunk" type="button" aria-pressed="true">Cyberpunk</button>
+          <button class="theme-pill"        data-theme="lava"      id="theme-lava"      type="button" aria-pressed="false">Lava</button>
+          <button class="theme-pill"        data-theme="ocean"     id="theme-ocean"     type="button" aria-pressed="false">Ocean</button>
+          <button class="theme-pill"        data-theme="galaxy"    id="theme-galaxy"    type="button" aria-pressed="false">Galaxy</button>
+        </div>
+
+        <!-- Mute (PRD §4.2.D) -->
+        <button id="muteBtn" type="button" title="Toggle audio mute" aria-label="Toggle audio mute">🔊</button>
+      </div>
+    </nav>
+
+    <!-- ── LEFT ACTION BUTTONS (PRD v2.0 UI) ───────────────── -->
+    <div id="leftBar" aria-label="AR Mode Controls">
+      <button class="ctrl-btn" id="captureBtn" type="button" aria-label="Capture screenshot">📸 Capture</button>
+      <button class="ctrl-btn" id="fsBtn"      type="button" aria-label="Toggle fullscreen">⛶ Full</button>
+      <button class="ctrl-btn" id="mirrorBtn"  type="button" aria-pressed="false" aria-label="Toggle mirror mode">🪞 Mirror</button>
+      <button class="ctrl-btn" id="pianoBtn"   type="button" aria-pressed="false" aria-label="Toggle piano mode">🎹 Piano</button>
+      <button class="ctrl-btn" id="drawBtn"    type="button" aria-pressed="false" aria-label="Toggle draw mode">✍️ Draw</button>
+      <button class="ctrl-btn" id="kaleidoBtn" type="button" aria-pressed="false" aria-label="Toggle kaleidoscope mode">🔮 Kaleido</button>
+      <button class="ctrl-btn" id="fireBtn"    type="button" aria-pressed="false" aria-label="Toggle fire hands">🔥 Fire</button>
+      <button class="ctrl-btn" id="puppetBtn"  type="button" aria-pressed="false" aria-label="Toggle shadow puppet mode">🐇 Puppet</button>
+      <button class="ctrl-btn" id="multiBtn"   type="button" aria-pressed="false" aria-label="Toggle multiplayer mode">👥 Multi</button>
+      <button class="ctrl-btn" id="constBtn"   type="button" aria-pressed="false" aria-label="Toggle constellation mode">⭐ Stars</button>
+      <button class="ctrl-btn" id="battleBtn"  type="button" aria-pressed="false" aria-label="Toggle gesture battle">⚔️ Battle</button>
+      <button class="ctrl-btn" id="drumBtn"    type="button" aria-pressed="false" aria-label="Toggle drum mode">🥁 Drums</button>
+      <button class="ctrl-btn" id="aslBtn"     type="button" aria-pressed="false" aria-label="Toggle ASL trainer">🤟 ASL</button>
+      <button class="ctrl-btn" id="galleryBtn" type="button" aria-pressed="false" aria-label="Toggle gallery">🖼️ Gallery</button>
+      <button class="ctrl-btn" id="weatherBtn" type="button" aria-pressed="false" aria-label="Toggle weather mode">🌧️ Weather</button>
+      <button class="ctrl-btn" id="timeBtn"    type="button" aria-pressed="false" aria-label="Toggle slow motion">⏳ SlowMotion</button>
+      <button class="ctrl-btn" id="accessBtn"  type="button" aria-pressed="false" aria-label="Toggle accessibility mode">♿ Access</button>
+    </div>
+
+    <!-- ── GESTURE BADGE ────────────────────────────────────── -->
+    <div id="gestureBadge" aria-live="polite" aria-atomic="true"></div>
+
+  </div><!-- /#arScreen -->
+
+  <!-- ══════════════════════════════════════════════════════
+       SCRIPTS — load order is critical
+       ══════════════════════════════════════════════════════ -->
+  <!-- Core modules -->
+  <script src="themes.js?v=14"></script>
+  <script src="gestures.js?v=14"></script>
+  <script src="audio.js?v=14"></script>
+  <script src="particles.js?v=14"></script>
+
+  <!-- Effects -->
+  <script src="effects/ripple.js?v=14"></script>
+  <script src="effects/explosion.js?v=14"></script>
+  <script src="effects/mirror.js?v=14"></script>
+  <script src="effects/spells.js?v=14"></script>
+  <script src="effects/fire.js?v=14"></script>
+  <script src="effects/arObjects.js?v=14"></script>
+  <script src="effects/puppets.js?v=14"></script>
+  <script src="effects/constellations.js?v=14"></script>
+  <script src="effects/weather.js?v=14"></script>
+  <script src="effects/timeWarp.js?v=14"></script>
+
+  <!-- Audio -->
+  <script src="audio/beat.js?v=14"></script>
+
+  <!-- Modes -->
+  <script src="modes/drawMode.js?v=14"></script>
+  <script src="modes/pianoMode.js?v=14"></script>
+  <script src="modes/battleMode.js?v=14"></script>
+  <script src="modes/drumMode.js?v=14"></script>
+  <script src="modes/aslTrainer.js?v=14"></script>
+
+  <!-- UI -->
+  <script src="ui/multiplayer.js?v=14"></script>
+  <script src="ui/hud.js?v=14"></script>
+  <script src="ui/toast.js?v=14"></script>
+  <script src="ui/screenshot.js?v=14"></script>
+  <script src="ui/spatial.js?v=14"></script>
+  <script src="ui/timer.js?v=14"></script>
+  <script src="ui/gallery.js?v=14"></script>
+  <script src="ui/accessibility.js?v=14"></script>
+
+  <!-- Renderer (needs themes, gestures, particles, ripple, mirror) -->
+  <script src="renderer.js?v=14"></script>
+
+  <!-- Inter-hand (needs renderer for drawSkeleton/drawNodes) -->
+  <script src="effects/interHand.js?v=14"></script>
+
+  <!-- Tracker & App (last) -->
+  <script src="segmenter.js?v=14"></script>
+  <script src="tracker.js?v=14"></script>
+  <script src="app.js?v=14"></script>
+
+  <!-- Gesture badge updater -->
+  <script>
+    (function () {
+      const badge = document.getElementById('gestureBadge');
+      const ICONS = { Fist:'👊', Open:'🖐️', Peace:'✌️', Point:'👆', Pinch:'🤌', Spread:'✨', ThumbsUp:'👍', None:'' };
+      let timer   = null, last = '';
+
+      // app.js calls this via renderLoop → updateGestureBadge
+      window._updateGestureBadge = function (gesture) {
+        if (gesture === last || gesture === 'None') return;
+        last = gesture;
+        badge.textContent = `${ICONS[gesture] || ''} ${gesture}`;
+        badge.classList.add('visible');
+        clearTimeout(timer);
+        timer = setTimeout(() => badge.classList.remove('visible'), 1800);
+      };
+    })();
+  </script>
+
+</body>
+</html>
