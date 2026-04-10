@@ -41,11 +41,11 @@
       `Mode: ${mode}`
     ].filter(Boolean);
 
-    const textY = 70; // Position at the top
+    const textY = barY + barH / 2 + 5;
     const cx    = W / 2;
 
     ctx.save();
-    ctx.font        = '11px Space Mono, monospace';
+    ctx.font        = '13px Space Mono, monospace';
     ctx.textAlign   = 'center';
     ctx.textBaseline = 'middle';
     
@@ -57,20 +57,7 @@
     ctx.fillStyle   = baseColor;
     ctx.shadowBlur  = 8;
     ctx.shadowColor = theme.glow;
-
-    // Draw a small pill for HUD at the top
-    const hugText = parts.join('   │   ');
-    const textWidth = ctx.measureText(hugText).width + 30;
-    
-    ctx.fillStyle = 'rgba(0,0,0,0.4)';
-    ctx.beginPath();
-    ctx.roundRect(cx - textWidth/2, textY - 14, textWidth, 28, 50);
-    ctx.fill();
-    ctx.strokeStyle = theme.hudColor + '44';
-    ctx.stroke();
-
-    ctx.fillStyle = baseColor;
-    ctx.fillText(hugText, cx, textY);
+    ctx.fillText(parts.join('   │   '), cx, textY);
     ctx.restore();
   }
 

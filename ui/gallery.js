@@ -34,8 +34,8 @@
     ctx.textAlign = 'center';
     ctx.fillText('NEON GALLERY', W/2, 80);
 
-    const cols = W < 600 ? 2 : 4;
-    const padding = W < 600 ? 20 : 40;
+    const cols = 4;
+    const padding = 40;
     const size = (W - padding * (cols + 1)) / cols;
 
     const imgCache = {};
@@ -44,7 +44,7 @@
         const r = Math.floor(i / cols);
         const c = i % cols;
         const x = padding + c * (size + padding);
-        const y = 150 + r * (size * 0.8 + padding);
+        const y = 150 + r * (size * 0.7 + padding);
 
         ctx.fillStyle = '#111';
         ctx.fillRect(x, y, size, size * 0.6);

@@ -203,36 +203,11 @@
     // 5.2 TIME WARP ECHOES (PRD v3.0 #15)
     window.NeonAuraTimeWarp?.drawEchoes(ctx, handsData, theme, W, H);
 
-    // 5. CAMERA FEED with "Object-Fit: Cover" logic
+    // 5. CAMERA FEED... (keep existing)
     if (videoEl && videoEl.readyState >= 2 && !window.NeonAuraConstellations?.isActive()) {
       ctx.save();
-      // Mirroring
       ctx.translate(W, 0); ctx.scale(-1, 1);
-      
-      const vW = videoEl.videoWidth;
-      const vH = videoEl.videoHeight;
-      const vRatio = vW / vH;
-      const cRatio = W / H;
-      
-      let dW, dH, dX, dY;
-      if (vRatio > cRatio) {
-        // Video is wider than canvas
-        dW = H * vRatio;
-        dH = H;
-        dX = (W - dW) / 2;
-        dY = 0;
-      } else {
-        // Video is taller than canvas
-        dW = W;
-        dH = W / vRatio;
-        dX = 0;
-        dY = (H - dH) / 2;
-      }
-      
-      // Since we mirrored with translate(W,0) and scale(-1,1), we need to adjust dX
-      // Actually, it's easier to draw at 0,0 and let the transform handle it, 
-      // but we need to center the 'cover' crop.
-      ctx.drawImage(videoEl, dX, dY, dW, dH);
+      ctx.drawImage(videoEl, 0, 0, W, H);
       ctx.restore();
     }
 
