@@ -375,7 +375,10 @@ html, body {
     padding: 0;
     justify-content: center;
     border-radius: 50%;
-    font-size: 0;
+    font-size: 24px; /* Show emojis clearly */
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
   }
   
   .ctrl-btn::after {
