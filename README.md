@@ -86,7 +86,7 @@ HandConnect is fully optimized for:
 
 - **GitHub Repository**: [HandConnect on GitHub](https://github.com/Surendra77-pixel/HandConnect)
 - **Developer LinkedIn**: [Surendra on LinkedIn](https://www.linkedin.com/in/surendra-pixel/)
-- **Live Preview**: [Launch Experience](https://Surendra77-pixel.github.io/HandConnect/)
+- **Live Preview**: [Launch Experience](https://surendra77-pixel.github.io/HandConnect/)
 
 ---
 
