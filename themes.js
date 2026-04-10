@@ -51,6 +51,15 @@
       particle:   '#ffffff',
       hudColor:   '#e056fd',
       background: 'rgba(155, 89, 182, 0.03)'
+    },
+    ultimate: {
+      name:       'Ultimate',
+      primary:    '#ffd700',
+      secondary:  '#ffffff',
+      glow:       '#fff5b1',
+      particle:   () => Math.random() > 0.5 ? '#ffffff' : '#ffd700',
+      hudColor:   '#ffd700',
+      background: 'rgba(255, 215, 0, 0.04)'
     }
   };
 
