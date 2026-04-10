@@ -3,15 +3,15 @@
 # 🌌 AURAWEAVE
 ### ULTIMATE EDITION v3.5
 
-[![Live Preview](https://img.shields.io/badge/🚀_LIVE_PREVIEW-DEPLOYS_INSTANTLY-00ffff?style=for-the-badge&logo=github)](https://manthan91.github.io/HandConnect)
-[![Status](https://img.shields.io/badge/STATUS-PRODUCTION_READY-00ff00?style=for-the-badge)](https://github.com/manthan91/HandConnect)
-[![Build](https://img.shields.io/badge/BUILD-3.5.0--ULTIMATE-ff00ff?style=for-the-badge)](https://github.com/manthan91/HandConnect)
+[![Live Preview](https://img.shields.io/badge/🚀_LIVE_PREVIEW-DEPLOYS_INSTANTLY-00ffff?style=for-the-badge&logo=github)](https://Surendra77-pixel.github.io/HandConnect)
+[![Status](https://img.shields.io/badge/STATUS-PRODUCTION_READY-00ff00?style=for-the-badge)](https://github.com/Surendra77-pixel/HandConnect)
+[![Build](https://img.shields.io/badge/BUILD-3.5.0--ULTIMATE-ff00ff?style=for-the-badge)](https://github.com/Surendra77-pixel/HandConnect)
 
 **Touchless AR interactivity — Entirely in your browser.**
 
 ---
 
-[**🚀 OPEN LIVE PREVIEW**](https://manthan91.github.io/HandConnect)  │  [**📖 DOCUMENTATION**](#🎯-what-is-this)  │  [**🛠️ INSTALLATION**](#🚀-getting-started)
+[**🚀 OPEN LIVE PREVIEW**](https://Surendra77-pixel.github.io/HandConnect)  │  [**📖 DOCUMENTATION**](#🎯-what-is-this)  │  [**🛠️ INSTALLATION**](#🚀-getting-started)
 
 ---
 
@@ -302,7 +302,7 @@ HandConnect/
 ## 🚀 Getting Started
 
 ### Option 1 — Use Live Demo (Easiest)
-👉 **[Click Here → github.com/manthan91/HandConnect](https://github.com/manthan91/HandConnect)**
+👉 **[Click Here → github.com/Surendra77-pixel/HandConnect](https://github.com/Surendra77-pixel/HandConnect)**
 
 1. Click **"Enter Experience"**
 2. Allow camera permission
@@ -312,7 +312,7 @@ HandConnect/
 ### Option 2 — Run Locally
 ```bash
 # Clone the repository
-git clone https://github.com/manthan91/HandConnect.git
+git clone https://github.com/Surendra77-pixel/HandConnect.git
 
 # Navigate into it
 cd HandConnect
@@ -471,7 +471,7 @@ MIT License — free to use, modify, and distribute for any purpose.
 ## 🙌 Author
 
 Built with ❤️ by **Manthan**
-[GitHub Profile](https://github.com/manthan91)
+[GitHub Profile](https://github.com/Surendra77-pixel)
 
 <div align="center">
 
