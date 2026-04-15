@@ -82,7 +82,7 @@ HandConnect is fully optimized for:
 
 ---
 
-## 🔗 Connect & Links
+## 🔗 Connect & Links-
 
 - **GitHub Repository**: [HandConnect on GitHub](https://github.com/Surendra77-pixel/HandConnect)
 - **Developer LinkedIn**: [Surendra on LinkedIn](https://www.linkedin.com/in/surendra-pixel/)
