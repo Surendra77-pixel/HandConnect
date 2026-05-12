@@ -6,7 +6,7 @@
 
 **HandConnect** is a cutting-edge, real-time augmented reality experience that transforms your hands into interactive digital controllers. Built with high-performance vanilla JavaScript and Google's MediaPipe, it offers a zero-latency, futuristic interface featuring multi-mode navigation, responsive audio, and stunning glassmorphism aesthetics.
 
----
+----
 
 ## 🚀 Key Features
 
